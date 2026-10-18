@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f5f7ff">
+<title>我的投资量化工具</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--ink:#17233d;--muted:#74809a;--blue:#3478f6;--green:#11a978;--line:#e8edf6;--purple:#8b78f6}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink)}
+.app{max-width:1040px;margin:auto;padding:16px 14px 92px}.top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:6px 2px 18px}.top h1{font-size:24px;margin:0}.sub{font-size:13px;color:var(--muted);margin-top:6px}.pill{border:1px solid var(--line);border-radius:99px;padding:8px 11px;background:white;font-size:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 5px 18px #253d6810;min-width:0}.wide{grid-column:1/-1}.label{font-size:13px;color:var(--muted)}.big{font-size:28px;font-weight:750;letter-spacing:-.7px;margin:7px 0}.positive{color:var(--green)}.negative{color:#e36c69}.small{font-size:12px;color:var(--muted);line-height:1.55}.section-title{font-size:17px;font-weight:750;margin:0 0 14px}.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.metric{background:#f7f9fe;border-radius:13px;padding:12px}.metric strong{display:block;font-size:19px;margin-top:6px}.field{display:flex;flex-direction:column;gap:7px;margin:12px 0}.field label{font-size:13px;color:#53617d}.field input,.field select{width:100%;border:1px solid #dce4f3;border-radius:11px;padding:12px 11px;background:#fff;font-size:16px;color:var(--ink);outline:none}.field input:focus,.field select:focus{border-color:var(--blue)}button{border:0;border-radius:12px;background:var(--blue);color:white;font-size:15px;font-weight:700;padding:13px 15px;width:100%;cursor:pointer}.tabs{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;justify-content:center;z-index:10;padding:8px max(8px,env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))}.tabs-inner{display:flex;width:min(100%,650px);justify-content:space-around;gap:4px}.tab{background:transparent;color:var(--muted);width:auto;min-width:62px;padding:7px 10px;font-size:12px;border-radius:12px}.tab.active{background:#edf3ff;color:var(--blue)}.panel{display:none}.panel.active{display:block}.chart{width:100%;height:210px;display:block}.chart-label{font-size:11px;fill:#8290aa}.barrow{display:grid;grid-template-columns:54px 1fr 46px;gap:8px;align-items:center;margin:12px 0;font-size:13px}.bar{height:9px;background:#edf1f8;border-radius:99px;overflow:hidden}.bar span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#55a3ff,#8178f7)}.notice{border-radius:12px;background:#fff8e9;color:#8a641e;padding:12px;font-size:12px;line-height:1.6}.assetlist{display:flex;flex-direction:column;gap:10px}.asset{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.asset:last-child{border:0}.dot{width:35px;height:35px;border-radius:12px;background:#edf3ff;color:var(--blue);display:grid;place-items:center;font-size:12px;font-weight:800}.asset-name{flex:1;min-width:0}.asset-name strong{display:block;font-size:14px}.asset-name span{font-size:12px;color:var(--muted)}.right{text-align:right;font-size:13px;font-weight:700}.footer-note{text-align:center;color:var(--muted);font-size:11px;margin-top:18px;line-height:1.6}
+@media(min-width:700px){.app{padding:26px 24px 36px}.top h1{font-size:30px}.grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.wide-tablet{grid-column:span 2}.tabs{position:static;background:transparent;border:0;padding:0;margin:0 0 20px}.tabs-inner{width:100%;justify-content:flex-start;gap:8px}.tab{border:1px solid var(--line);background:white;padding:10px 17px;font-size:14px}.tab.active{border-color:#cbdcff}.chart{height:250px}.metrics{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:380px){.app{padding-left:10px;padding-right:10px}.top h1{font-size:21px}.big{font-size:24px}.card{padding:13px}.tab{min-width:52px;padding:7px 7px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top"><div><h1>我的投资 📈</h1><div class="sub">让时间成为你的朋友 · 长期投资研究工具</div></div><div class="pill">模拟模式</div></header>
+  <nav class="tabs"><div class="tabs-inner">
+    <button class="tab active" data-panel="home">⌂ 首页</button><button class="tab" data-panel="simulate">◷ 定投</button><button class="tab" data-panel="risk">◇ 风险</button><button class="tab" data-panel="strategy">↗ 策略</button>
+  </div></nav>
+
+  <section id="home" class="panel active">
+    <div class="grid">
+      <article class="card wide-tablet"><div class="label">每日计划投入</div><div class="big">€20.00</div><div class="small">按每年约 252 个交易日估算</div><svg class="chart" viewBox="0 0 600 220" preserveAspectRatio="none" id="homeChart" aria-label="示意增长曲线"></svg><div class="small">示意图：不是实时账户收益，也不是收益承诺。</div></article>
+      <article class="card"><div class="label">10 年投入本金</div><div class="big" id="principal10">€50,400</div><div class="small">€20 × 252 个交易日 × 10 年</div></article>
+      <article class="card"><div class="label">20 年投入本金</div><div class="big" id="principal20">€100,800</div><div class="small">未包含投资盈亏</div></article>
+      <article class="card wide"><h2 class="section-title">关注资产</h2><div class="assetlist">
+        <div class="asset"><div class="dot">QQQ</div><div class="asset-name"><strong>纳斯达克 100 ETF</strong><span>大型科技股集中度较高</span></div><div class="right">ETF</div></div>
+        <div class="asset"><div class="dot">SPY</div><div class="asset-name"><strong>标普 500 ETF</strong><span>美国大型公司</span></div><div class="right">ETF</div></div>
+        <div class="asset"><div class="dot">MSFT</div><div class="asset-name"><strong>微软</strong><span>个股风险高于分散化基金</span></div><div class="right">股票</div></div>
+        <div class="asset"><div class="dot">NVDA</div><div class="asset-name"><strong>英伟达</strong><span>价格波动可能较大</span></div><div class="right">股票</div></div>
+      </div></article>
+      <article class="card wide"><h2 class="section-title">长期复利示例</h2><div class="small">调整定投金额、年限和预期年化收益率，查看数学模型下的可能结果。实际收益会波动，可能亏损。</div><button style="margin-top:12px" onclick="showPanel('simulate')">开始模拟 →</button></article>
+    </div>
+  </section>
+
+  <section id="simulate" class="panel">
+    <div class="grid">
+      <article class="card wide-tablet"><h2 class="section-title">定投收益模拟</h2>
+        <div class="field"><label for="amount">每日投入金额（€）</label><input id="amount" type="number" min="1" step="1" value="20"></div>
+        <div class="field"><label for="years">投资年限</label><select id="years"><option>5</option><option>10</option><option selected>15</option><option>20</option></select></div>
+        <div class="field"><label for="rate">假设年化收益率（%）</label><input id="rate" type="number" min="-30" max="40" step="0.5" value="7"></div>
+        <div class="field"><label for="fee">年化费用假设（%）</label><input id="fee" type="number" min="0" max="5" step="0.1" value="0.2"></div>
+        <button onclick="runSimulation()">计算模拟结果</button>
+      </article>
+      <article class="card wide-tablet"><h2 class="section-title">模拟结果</h2>
+        <div class="metrics">
+          <div class="metric"><div class="label">累计投入</div><strong id="simPrincipal">€75,600</strong></div>
+          <div class="metric"><div class="label">模拟期末资产</div><strong id="simValue">€—</strong></div>
+          <div class="metric"><div class="label">模拟盈亏</div><strong id="simProfit">€—</strong></div>
+          <div class="metric"><div class="label">盈亏 / 本金</div><strong id="simReturn">—</strong></div>
+        </div>
+        <svg class="chart" viewBox="0 0 600 220" preserveAspectRatio="none" id="simChart"></svg>
+        <div class="small">按每年 252 个交易日投入，使用固定收益率的数学模型；不是市场预测。税费、汇率、买卖点差和现金闲置会影响实际结果。</div>
+      </article>
+    </div>
+  </section>
+
+  <section id="risk" class="panel">
+    <div class="grid">
+      <article class="card wide"><h2 class="section-title">风险指标怎么理解？</h2>
+        <div class="metrics">
+          <div class="metric"><div class="label">波动率</div><strong>越高越颠簸</strong><div class="small">衡量收益变化幅度</div></div>
+          <div class="metric"><div class="label">最大回撤</div><strong>曾经跌多深</strong><div class="small">从历史高点到之后低点</div></div>
+          <div class="metric"><div class="label">夏普比率</div><strong>风险调整收益</strong><div class="small">需结合时期和基准比较</div></div>
+          <div class="metric"><div class="label">相关性</div><strong>是否同涨同跌</strong><div class="small">资产多不代表足够分散</div></div>
+        </div>
+      </article>
+      <article class="card wide-tablet"><h2 class="section-title">风险自查</h2>
+        <div class="field"><label for="drop">如果投资组合下跌多少，你仍能坚持持有？</label><select id="drop"><option value="10">约 10%</option><option value="20" selected>约 20%</option><option value="35">约 35%</option><option value="50">约 50%</option></select></div>
+        <div id="riskAdvice" class="notice">选择可承受的下跌幅度后，会显示一般性的风险提示。</div>
+        <button style="margin-top:12px" onclick="assessRisk()">查看风险提示</button>
+      </article>
+      <article class="card wide-tablet"><h2 class="section-title">重要原则</h2><div class="small">不要只看过去涨幅最高的资产。个股可能长期跑输市场，行业 ETF 也可能高度集中。投资前先考虑应急资金、投资期限、费用、税务以及自己能承受的亏损。</div></article>
+    </div>
+  </section>
+
+  <section id="strategy" class="panel">
+    <div class="grid">
+      <article class="card wide-tablet"><h2 class="section-title">策略回测说明</h2><div class="small">正式回测需要历史价格数据。本移动版原型不伪造实时行情，也不把示例数字当成真实历史表现。你可以在电脑 Python 版中获取历史数据，进行均线策略与买入持有比较。</div>
+        <div class="field"><label for="short">短期均线（交易日）</label><input id="short" type="number" min="2" value="20"></div>
+        <div class="field"><label for="long">长期均线（交易日）</label><input id="long" type="number" min="5" value="100"></div>
+        <button onclick="checkStrategy()">检查策略参数</button><div id="strategyResult" class="notice" style="margin-top:12px">默认参数：20 日 / 100 日均线。此处仅检查参数，不生成虚假的回测收益。</div>
+      </article>
+      <article class="card wide-tablet"><h2 class="section-title">如何做真实回测</h2><ol class="small" style="padding-left:20px;line-height:1.9"><li>获取经过拆股/分红调整的历史价格。</li><li>设定买入卖出规则，并避免未来数据泄漏。</li><li>加入佣金、点差、税费和汇率影响。</li><li>用不同历史区间验证，避免只挑选表现好的时期。</li><li>把回测当研究，不保证未来有效。</li></ol></article>
+    </div>
+  </section>
+  <div class="footer-note">仅供学习与研究，不构成投资建议。此版本是本地交互原型，不连接券商、不自动交易，也不显示实时行情。</div>
+</div>
+<script>
+function euro(n){return new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:2}).format(n)}
+function showPanel(id){document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.panel===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='simulate')runSimulation()}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>showPanel(b.dataset.panel)));
+function drawLine(id,series1,series2){const svg=document.getElementById(id);const W=600,H=220,pad=20;let max=Math.max(...series1,...(series2||[]),1);let min=0;function path(s){return s.map((v,i)=>`${i?'L':'M'} ${pad+i*(W-2*pad)/(s.length-1)} ${H-pad-(v-min)/(max-min)*(H-2*pad)}`).join(' ')}let grid='';for(let i=0;i<4;i++){let y=pad+i*(H-2*pad)/3;grid+=`<line x1="${pad}" y1="${y}" x2="${W-pad}" y2="${y}" stroke="#edf1f8" stroke-width="1"/>`}svg.innerHTML=grid+(series2?`<path d="${path(series2)}" fill="none" stroke="#11a978" stroke-width="3" stroke-linecap="round"/>`:'')+`<path d="${path(series1)}" fill="none" stroke="#3478f6" stroke-width="3" stroke-linecap="round"/>`}
+function simulateData(amount,years,rate,fee){const n=Math.max(1,Math.round(years*252));const r=(1+(rate-fee)/100)**(1/252)-1;let val=0,principal=0,values=[],invested=[];for(let i=0;i<n;i++){val=val*(1+r)+amount;principal+=amount;if(i%Math.max(1,Math.floor(n/120))===0){values.push(val);invested.push(principal)}}if(values[values.length-1]!==val){values.push(val);invested.push(principal)}return {val,principal,values,invested}}
+function runSimulation(){const amount=Math.max(0,Number(document.getElementById('amount').value)||0),years=Math.max(1,Number(document.getElementById('years').value)||15),rate=Number(document.getElementById('rate').value)||0,fee=Math.max(0,Number(document.getElementById('fee').value)||0);const d=simulateData(amount,years,rate,fee);const profit=d.val-d.principal;document.getElementById('simPrincipal').textContent=euro(d.principal);document.getElementById('simValue').textContent=euro(d.val);document.getElementById('simProfit').textContent=euro(profit);document.getElementById('simProfit').className=profit>=0?'positive':'negative';document.getElementById('simReturn').textContent=(profit/d.principal*100||0).toFixed(1)+'%';drawLine('simChart',d.values,d.invested)}
+function assessRisk(){const v=Number(document.getElementById('drop').value);let t=v<=10?'你偏向较低回撤容忍度。建议重点研究分散化程度较高的资产，并确认短期需要用的钱不投入市场。':v<=20?'你选择了中等回撤承受范围。请注意，股票类资产在压力时期仍可能超过这个跌幅。':'你表示可以承受较大下跌，但实际亏损时的感受可能不同。避免因单一行业或个股集中而承担无法接受的风险。';document.getElementById('riskAdvice').textContent=t}
+function checkStrategy(){const s=Number(document.getElementById('short').value),l=Number(document.getElementById('long').value);document.getElementById('strategyResult').textContent=s<2||l<2?'均线周期需要大于等于 2 个交易日。':s>=l?'通常应设置短期均线小于长期均线，请调整参数。':`参数有效：短期 ${s} 日、长期 ${l} 日。要计算真实历史收益，还需载入历史价格，并考虑交易成本。`}
+function initialChart(){let a=[],b=[],v=100;for(let i=0;i<80;i++){v*=1+(Math.sin(i*.37)*.005+.006);a.push(v);b.push(100+i*0.32)}drawLine('homeChart',a,b);runSimulation()}
+initialChart();
+</script>
+</body>
+</html>
